@@ -28,7 +28,7 @@ export default async function Home() {
       <section className="relative h-[80vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image
-            src="https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?auto=format&fit=crop&q=80&w=1920"
+            src="/images/hero.png"
             alt="Kinenovaa Spa"
             fill
             className="object-cover brightness-50"
@@ -82,7 +82,7 @@ export default async function Home() {
                 className="group relative h-80 overflow-hidden rounded-lg shadow-md block"
               >
                 <Image
-                  src={`https://source.unsplash.com/random/800x600?${category.slug},spa`} // Placeholder based on slug
+                  src={`/images/categories/${category.slug}.png`} // Local images
                   alt={category.name}
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -157,7 +157,7 @@ export default async function Home() {
 
             <div className="relative h-[500px] rounded-lg overflow-hidden border-4 border-primary/20 shadow-2xl">
               <Image
-                src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&q=80&w=800"
+                src="/images/interior.png"
                 alt="Interior Clínica"
                 fill
                 className="object-cover"

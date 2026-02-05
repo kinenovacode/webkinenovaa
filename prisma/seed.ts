@@ -34,7 +34,7 @@ async function main() {
             description: "Tratamiento completo para renovar tu piel, eliminando impurezas y células muertas.",
             price: 35000,
             originalPrice: 45000,
-            imageUrl: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&q=80&w=600",
+            imageUrl: "/images/categories/facial.png",
             categoryId: facial.id,
         },
     });
@@ -47,7 +47,7 @@ async function main() {
             slug: "masaje-descontracturante",
             description: "Alivia tensiones musculares y reduce el estrés con técnicas especializadas.",
             price: 25000,
-            imageUrl: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&q=80&w=600",
+            imageUrl: "/images/categories/corporal.png",
             categoryId: corporal.id,
         },
     });
@@ -60,7 +60,7 @@ async function main() {
             slug: "evaluacion-kinesica",
             description: "Diagnóstico completo realizado por profesionales para tu recuperación.",
             price: 20000,
-            imageUrl: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=600",
+            imageUrl: "/images/categories/kinesiologia.png",
             categoryId: kine.id,
         },
     });
@@ -74,7 +74,7 @@ async function main() {
             description: "3 sesiones de radiofrecuencia + 1 limpieza facial. ¡Oferta imperdible!",
             price: 99990,
             originalPrice: 150000,
-            imageUrl: "https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?auto=format&fit=crop&q=80&w=600",
+            imageUrl: "/images/categories/facial.png",
             categoryId: facial.id,
         },
     });
