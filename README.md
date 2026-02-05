@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Kinenovaa Web
 
-## Getting Started
+Proyecto e-commerce para Clínica Estética/Kinesiología "Kinenovaa".
 
-First, run the development server:
+## Stack Tecnológico
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Framework**: Next.js 14+ (App Router)
+- **Lenguaje**: TypeScript
+- **Estilos**: Tailwind CSS
+- **Base de Datos**: SQLite (Dev) / PostgreSQL (Prod) + Prisma ORM
+- **Estado**: Zustand (Carrito persistente)
+- **Pagos**: Transbank Webpay Plus (SDK Oficial)
+- **Validación**: Zod
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Instalación y Configuración
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. **Clonar el repositorio**:
+   ```bash
+   git clone <url-repo>
+   cd webkinenovaa
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+2. **Instalar dependencias**:
+   ```bash
+   npm install
+   ```
+   *Nota: Asegúrate de instalar también `tsx` para el seed script si no está global: `npm install -D tsx`*
 
-## Learn More
+3. **Configurar Variables de Entorno**:
+   Crear un archivo `.env` en la raíz (ver `.env.example`):
+   ```env
+   DATABASE_URL="file:./dev.db"
+   TRANSBANK_ENV="INTEGRATION"
+   TRANSBANK_COMMERCE_CODE="597055555532" 
+   TRANSBANK_API_KEY="579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C"
+   BASE_URL="http://localhost:3000"
+   ```
+   *(Las credenciales de Transbank arriba son las públicas de integración/sandbox)*
 
-To learn more about Next.js, take a look at the following resources:
+4. **Inicializar Base de Datos**:
+   ```bash
+   npx prisma db push
+   npx tsx prisma/seed.ts
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+5. **Correr el proyecto**:
+   ```bash
+   npm run dev
+   ```
+   El sitio estará disponible en `http://localhost:3000`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Pruebas de Pago (Webpay Plus)
 
-## Deploy on Vercel
+1. En el ambiente de integración (`TRANSBANK_ENV=INTEGRATION`), al ir a pagar serás redirigido a una página de prueba de Transbank.
+2. Usa las tarjetas de crédito de prueba disponibles en la documentación de Transbank Developers.
+3. Al finalizar, serás redirigido a `/pago/resultado`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Estructura del Proyecto
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `/app`: Rutas de Next.js (Pages, Layouts, API Routes).
+  - `/api/webpay`: Endpoints para crear y confirmar transacciones.
+  - `/tienda`: Catálogo de productos.
+  - `/checkout`: Página de pago.
+- `/components`:
+  - `/ui`: Componentes base (Button, Input, etc.).
+  - `/commerce`: Componentes de negocio (ProductCard, CartDrawer).
+  - `/layout`: Header, Footer.
+- `/lib`: Utilidades (Prisma Singleton, utils).
+- `/store`: Zustand Stores (Carrito).
+- `/prisma`: Schema y Seed.
+
+## Comandos Útiles
+
+- `npx prisma studio`: Interfaz visual para ver la base de datos.
+- `next lint`: Verificar código.

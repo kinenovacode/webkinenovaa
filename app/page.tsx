@@ -1,65 +1,171 @@
+import { prisma } from "@/lib/prisma";
+import Link from "next/link";
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { OfferGrid } from "@/components/commerce/offer-grid";
+import { ArrowRight, Star, Clock, MapPin, Phone } from "lucide-react";
 
-export default function Home() {
+export const revalidate = 60; // Revalidate every minute
+
+export default async function Home() {
+  // Fetch featured products (offers)
+  const offers = await prisma.product.findMany({
+    where: {
+      originalPrice: { not: null },
+    },
+    take: 4,
+    include: {
+      category: true,
+    },
+  });
+
+  // Fetch categories
+  const categories = await prisma.category.findMany();
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <div className="flex flex-col gap-0">
+      {/* Hero Section */}
+      <section className="relative h-[80vh] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?auto=format&fit=crop&q=80&w=1920"
+            alt="Kinenovaa Spa"
+            fill
+            className="object-cover brightness-50"
+            priority
+          />
+        </div>
+
+        <div className="relative z-10 container mx-auto px-4 text-center text-white space-y-6">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-bold tracking-tight animate-in fade-in slide-in-from-bottom-5 duration-1000">
+            Descubre tu Mejor <span className="text-primary italic">Versión</span>
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="text-lg md:text-xl max-w-2xl mx-auto text-gray-200 animate-in fade-in slide-in-from-bottom-5 duration-1000 delay-200">
+            Tratamientos estéticos avanzados y kinesiología integral en un espacio diseñado para tu bienestar y relajación.
           </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4 animate-in fade-in slide-in-from-bottom-5 duration-1000 delay-300">
+            <Button size="lg" variant="luxury" asChild className="text-lg px-8">
+              <Link href="https://wa.me/56912345678">
+                Agenda tu Evaluación Gratis
+              </Link>
+            </Button>
+            <Button size="lg" variant="outline" className="text-white border-white hover:bg-white hover:text-secondary text-lg px-8">
+              <Link href="/tienda">
+                Ver Tratamientos
+              </Link>
+            </Button>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* Featured Offers */}
+      <OfferGrid products={offers} />
+
+      {/* Categories */}
+      <section className="py-16 bg-muted/30">
+        <div className="container mx-auto px-4">
+          <div className="flex justify-between items-end mb-12">
+            <div>
+              <h2 className="text-3xl font-serif font-bold text-secondary">Nuestros Servicios</h2>
+              <p className="text-gray-500 mt-2">Explora nuestras áreas de especialidad</p>
+            </div>
+            <Link href="/tienda" className="hidden md:flex items-center text-primary font-medium hover:underline">
+              Ver todo el catálogo <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {categories.map((category) => (
+              <Link
+                key={category.id}
+                href={`/tienda?category=${category.slug}`}
+                className="group relative h-80 overflow-hidden rounded-lg shadow-md block"
+              >
+                <Image
+                  src={`https://source.unsplash.com/random/800x600?${category.slug},spa`} // Placeholder based on slug
+                  alt={category.name}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-8">
+                  <h3 className="text-2xl font-serif font-bold text-white group-hover:text-primary transition-colors">
+                    {category.name}
+                  </h3>
+                  <p className="text-gray-300 text-sm mt-2 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                    Ver tratamientos &rarr;
+                  </p>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          <div className="mt-8 text-center md:hidden">
+            <Link href="/tienda" className="inline-flex items-center text-primary font-medium hover:underline">
+              Ver todo el catálogo <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
+          </div>
         </div>
-      </main>
+      </section>
+
+      {/* Branches / Trust */}
+      <section id="sucursales" className="py-20 bg-secondary text-white">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="space-y-8">
+              <h2 className="text-3xl md:text-4xl font-serif font-bold text-primary">
+                Visítanos en Las Condes
+              </h2>
+              <p className="text-gray-300 text-lg leading-relaxed">
+                Nuestra clínica está ubicada en el corazón de Las Condes, con estacionamiento propio y vigilancia 24/7. Disfruta de un ambiente seguro, relajante y exclusivo.
+              </p>
+
+              <div className="grid gap-6">
+                <div className="flex items-start gap-4">
+                  <div className="bg-primary/20 p-3 rounded-full">
+                    <MapPin className="h-6 w-6 text-primary" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-lg">Dirección</h4>
+                    <p className="text-gray-400">Av. Las Condes 12345, Oficina 202</p>
+                    <p className="text-gray-400">Las Condes, Santiago</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="bg-primary/20 p-3 rounded-full">
+                    <Clock className="h-6 w-6 text-primary" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-lg">Horarios</h4>
+                    <p className="text-gray-400">Lun - Vie: 09:00 - 20:00</p>
+                    <p className="text-gray-400">Sáb: 10:00 - 14:00</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="bg-primary/20 p-3 rounded-full">
+                    <Phone className="h-6 w-6 text-primary" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-lg">Contacto</h4>
+                    <p className="text-gray-400">+56 9 1234 5678</p>
+                    <p className="text-gray-400">contacto@kinenovaa.cl</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="relative h-[500px] rounded-lg overflow-hidden border-4 border-primary/20 shadow-2xl">
+              <Image
+                src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&q=80&w=800"
+                alt="Interior Clínica"
+                fill
+                className="object-cover"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
