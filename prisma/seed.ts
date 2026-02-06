@@ -27,7 +27,9 @@ async function main() {
     // Products
     await prisma.product.upsert({
         where: { slug: "limpieza-facial-profunda" },
-        update: {},
+        update: {
+            imageUrl: "/images/categories/facial.png",
+        },
         create: {
             name: "Limpieza Facial Profunda",
             slug: "limpieza-facial-profunda",
@@ -41,7 +43,9 @@ async function main() {
 
     await prisma.product.upsert({
         where: { slug: "masaje-descontracturante" },
-        update: {},
+        update: {
+            imageUrl: "/images/categories/corporal.png",
+        },
         create: {
             name: "Masaje Descontracturante",
             slug: "masaje-descontracturante",
@@ -54,7 +58,9 @@ async function main() {
 
     await prisma.product.upsert({
         where: { slug: "evaluacion-kinesica" },
-        update: {},
+        update: {
+            imageUrl: "/images/categories/kinesiologia.png",
+        },
         create: {
             name: "Evaluación Kinésica",
             slug: "evaluacion-kinesica",
@@ -67,7 +73,9 @@ async function main() {
 
     await prisma.product.upsert({
         where: { slug: "pack-rejuvenecimiento" },
-        update: {},
+        update: {
+            imageUrl: "/images/categories/facial.png",
+        },
         create: {
             name: "Pack Rejuvenecimiento",
             slug: "pack-rejuvenecimiento",

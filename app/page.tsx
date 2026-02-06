@@ -113,10 +113,10 @@ export default async function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-8">
               <h2 className="text-3xl md:text-4xl font-serif font-bold text-primary">
-                Visítanos en Las Condes
+                Visítanos en La Reina
               </h2>
               <p className="text-gray-300 text-lg leading-relaxed">
-                Nuestra clínica está ubicada en el corazón de Las Condes, con estacionamiento propio y vigilancia 24/7. Disfruta de un ambiente seguro, relajante y exclusivo.
+                Nuestra clínica está ubicada en La Reina, con estacionamiento propio y vigilancia 24/7. Disfruta de un ambiente seguro, relajante y exclusivo.
               </p>
 
               <div className="grid gap-6">
@@ -126,8 +126,8 @@ export default async function Home() {
                   </div>
                   <div>
                     <h4 className="font-bold text-lg">Dirección</h4>
-                    <p className="text-gray-400">Av. Las Condes 12345, Oficina 202</p>
-                    <p className="text-gray-400">Las Condes, Santiago</p>
+                    <p className="text-gray-400">Avenida Echeñique 5839</p>
+                    <p className="text-gray-400">La Reina, Santiago</p>
                   </div>
                 </div>
 
@@ -137,8 +137,8 @@ export default async function Home() {
                   </div>
                   <div>
                     <h4 className="font-bold text-lg">Horarios</h4>
-                    <p className="text-gray-400">Lun - Vie: 09:00 - 20:00</p>
-                    <p className="text-gray-400">Sáb: 10:00 - 14:00</p>
+                    <p className="text-gray-400">Lunes a viernes de 10:00 a 20:00 hrs</p>
+                    <p className="text-gray-400">Sabado 10:00 a 14:00 hrs</p>
                   </div>
                 </div>
 
@@ -156,12 +156,16 @@ export default async function Home() {
             </div>
 
             <div className="relative h-[500px] rounded-lg overflow-hidden border-4 border-primary/20 shadow-2xl">
-              <Image
-                src="/images/interior.png"
-                alt="Interior Clínica"
-                fill
-                className="object-cover"
-              />
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3330.347514695995!2d-70.5648879242969!3d-33.43577769594595!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9662ce5a37452d9d%3A0xe549618831633516!2sAv.%20Eche%C3%B1ique%205839%2C%20La%20Reina%2C%20Regi%C3%B3n%20Metropolitana!5e0!3m2!1ses!2scl!4v1707145000000!5m2!1ses!2scl"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen={true}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Ubicación Kinenovaa"
+              ></iframe>
             </div>
           </div>
         </div>
