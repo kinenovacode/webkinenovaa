@@ -89,7 +89,15 @@ export default async function ProductPage({ params }: ProductPageProps) {
                             </div>
 
                             <div className="pt-4">
-                                <AddToCartButton product={product} />
+                                <AddToCartButton
+                                    product={{
+                                        id: product.id,
+                                        name: product.name,
+                                        price: product.price,
+                                        slug: product.slug,
+                                        imageUrl: product.imageUrl,
+                                    }}
+                                />
                             </div>
                         </div>
                     </div>
