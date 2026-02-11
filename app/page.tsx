@@ -4,23 +4,25 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { OfferGrid } from "@/components/commerce/offer-grid";
 import { ArrowRight, Star, Clock, MapPin, Phone } from "lucide-react";
+import { safeQuery } from "@/lib/utils";
 
-export const revalidate = 60; // Revalidate every minute
+export const revalidate = 60;
 
 export default async function Home() {
-  // Fetch featured products (offers)
-  const offers = await prisma.product.findMany({
-    where: {
-      originalPrice: { not: null },
-    },
-    take: 4,
-    include: {
-      category: true,
-    },
-  });
+  // Use safeQuery to handle database connection errors gracefully
+  const offers = await safeQuery(
+    () => prisma.product.findMany({
+      where: { originalPrice: { not: null } },
+      take: 4,
+      include: { category: true },
+    }),
+    [] // fallback empty array
+  );
 
-  // Fetch categories
-  const categories = await prisma.category.findMany();
+  const categories = await safeQuery(
+    () => prisma.category.findMany(),
+    [] // fallback empty array
+  );
 
   return (
     <div className="flex flex-col gap-0">

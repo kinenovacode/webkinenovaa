@@ -1,9 +1,9 @@
 import { prisma } from "@/lib/prisma";
 import { Button } from "@/components/ui/button";
-import { formatPrice } from "@/lib/utils";
+import { formatPrice, safeQuery } from "@/lib/utils";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { AddToCartButton } from "./components/add-to-cart-button"; // We'll create this client component
+import { AddToCartButton } from "./components/add-to-cart-button";
 import { CheckCircle2, Clock, ShieldCheck } from "lucide-react";
 
 interface ProductPageProps {
@@ -17,10 +17,13 @@ export const revalidate = 60;
 export default async function ProductPage({ params }: ProductPageProps) {
     const { slug } = await params;
 
-    const product = await prisma.product.findUnique({
-        where: { slug },
-        include: { category: true },
-    });
+    const product = await safeQuery(
+        () => prisma.product.findUnique({
+            where: { slug },
+            include: { category: true },
+        }),
+        null
+    );
 
     if (!product) {
         notFound();

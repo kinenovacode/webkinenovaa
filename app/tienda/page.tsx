@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Prisma } from "@prisma/client";
 import { Check } from "lucide-react";
+import { safeQuery } from "@/lib/utils";
 
 export const revalidate = 60;
 
@@ -19,27 +20,26 @@ export default async function TiendaPage({ searchParams }: TiendaPageProps) {
     const categorySlug = params?.category;
     const sort = params?.sort || "newest";
 
-    // Build where clause
+    // Build query parameters
     const where: Prisma.ProductWhereInput = {};
     if (categorySlug) {
-        where.category = {
-            slug: categorySlug,
-        };
+        where.category = { slug: categorySlug };
     }
 
-    // Build orderBy clause
     let orderBy: Prisma.ProductOrderByWithRelationInput = { createdAt: "desc" };
     if (sort === "price_asc") orderBy = { price: "asc" };
     if (sort === "price_desc") orderBy = { price: "desc" };
 
-    // Fetch data
-    const products = await prisma.product.findMany({
-        where,
-        orderBy,
-        include: { category: true },
-    });
+    // Use safeQuery to handle database connection errors gracefully
+    const products = await safeQuery(
+        () => prisma.product.findMany({ where, orderBy, include: { category: true } }),
+        []
+    );
 
-    const categories = await prisma.category.findMany();
+    const categories = await safeQuery(
+        () => prisma.category.findMany(),
+        []
+    );
 
     return (
         <div className="bg-white min-h-screen py-8">

@@ -11,3 +11,16 @@ export function formatPrice(price: number) {
         currency: "CLP",
     }).format(price);
 }
+
+// Helper para ejecutar queries de Prisma de forma segura
+export async function safeQuery<T>(
+    queryFn: () => Promise<T>,
+    fallback: T
+): Promise<T> {
+    try {
+        return await queryFn();
+    } catch (error) {
+        console.warn("Database query failed, using fallback data:", error);
+        return fallback;
+    }
+}
